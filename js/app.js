@@ -17,7 +17,7 @@ const app = new Vue(
         .get('https://api.themoviedb.org/3/movie/550?', {
           params: {
             api_key: '235a6ac442ac4f61d5783c4fbcc2b7ae',
-            query: this.searchValue,
+            query: self.searchValue,
             language: 'it-IT'
           }
         })
