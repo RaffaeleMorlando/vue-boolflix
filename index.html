@@ -5,6 +5,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.1/css/all.css" integrity="sha384-vp86vTRFVJgpjF9jiIGPEEqYqlDwgyBgEF109VFjmqGmIY/Y4HV4d3Gp2irVfcrp" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+     rel="stylesheet">
     <title>Vue - Boolflix</title>
     <script src="https://cdn.jsdelivr.net/npm/vue@2.6.12/dist/vue.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.21.0/axios.min.js" integrity="sha512-DZqqY3PiOvTP9HkjIWgjO6ouCbq+dxqWoJZ/Q+zPYNHmlnI2dQnbJ5bxAHpAMw+LXRm4D72EIRXzvcHQtE8/VQ==" crossorigin="anonymous"></script>
@@ -27,30 +30,45 @@
                 </div>
             </div>
             <div class="search-bar-wrapper">
-                <input @keypress.enter="getMovies" v-model="searchValue" type="text" placeholder="Title, people, genres">
+                <input @keyup="getMovies" v-model="searchValue" type="text" placeholder="Title, people, genres">
                 <button @click="getMovies"><i class="fas fa-search"></i></button>
+                <div class="icons-wrapper-right">
+                    <i class="fas fa-gift"></i>
+                    <i class="fas fa-bell"></i>
+                    <img src="img/icons-user.png" alt="">
+                    <i class="fas fa-caret-down"></i>
+                </div>
             </div>
         </header>
 
         <main>
             <div class="container-movies">
+                <!-- MOVIE CARD -->
                 <div v-for="movie in moviesList" class="movie-card">
                     <div class="background-cover">
-                        <img src="https://m.media-amazon.com/images/M/MV5BMTM5MjkwMTI0MV5BMl5BanBnXkFtZTcwODQwMTc0OQ@@._V1_.jpg" alt="">
+                        <img v-if="movie.poster_path != null" :src="prefixUrl+movie.poster_path" alt="movie.title">
+                        <img v-else src="http://www.starwarsbookclub.com/assets/no-cover.png" alt="movie.title">
                     </div>
                     <div class="overlay">
                         <h2 id="title">Title: <span>{{movie.title}}</span></h2>
                         <h2 id="original-title">Original Title: <span>{{movie.original_title}}</span></h2>
                         <h2 id="language">Language: <span>{{movie.original_language}}</span></h2>
-                        <h2 id="rate">Rate: <span>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
-                            <i class="fas fa-star"></i>
+                        <h2 id="score">Score: <span>
                             <i class="fas fa-star"></i>
                         </span></h2>
                         <h2 id="overview">Overview: <span>{{movie.overview}}</span></h2>
                     </div>
+                </div>
+                <!-- /MOVIE CARD -->
+                <div v-if="moviesList == 0" class="no-result">
+                    <p>You search for "{{searchValue}}" did not have any matches</p><br>
+                    <p>Suggestion:</p>
+                    <ul>
+                        <li>Lorem ipsum dolor sit.</li>
+                        <li>Lorem ipsum dolor sit.</li>
+                        <li>Lorem ipsum dolor sit.</li>
+                        <li>Lorem ipsum dolor sit.</li>
+                    </ul>
                 </div>
             </div>
         </main>
@@ -115,3 +133,9 @@
     width: 100%;
     height: 100%;
 } -->
+
+<!-- // const card = document.querySelector('.movie-inner-card');
+// card.addEventListener('click', function() {
+//   card.classList.toggle('is-flipped')
+//   console.log('is flipped');
+// }); -->

@@ -2,15 +2,15 @@
     box-sizing: border-box;
     margin: 0;
     padding: 0;
-    list-style: none;
+    /* list-style: none; */
     text-decoration: none;
     outline: none;
+    font-family: 'Lato', sans-serif;
 }
 :root {
     --debug: 1px solid red;
     --headerColor: #0D0D0D;
 }
-
 
 body {
     background-color: #151515;
@@ -18,7 +18,6 @@ body {
 
 #app {
     width: 100%;
-    /* height: 100vh; */
     background-color: #151515;
 }
 
@@ -26,10 +25,12 @@ body {
     display: flex;
     width: 100%;
     height: 4.375rem;
-    background-color: rgba(21, 21, 21, 0.659);
+    /* background-color: rgba(12, 12, 12, 0.947); */
+    background-image: linear-gradient(rgba(0, 0, 0, 0.947), rgba(26, 26, 26, 0.947));
     position: fixed;
     top: 0;
     left: 0;
+    z-index: 1;
 }
 /* left section header */
 header > .icon-section {
@@ -38,12 +39,15 @@ header > .icon-section {
     height: 100%;
 }
 .icon-section > .icon-wrapper {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     width: 30%;
     height: 100%;
 }
 header  .icon-wrapper > img {
-    width: 100%;
-    height: 100%;
+    width: 50%;
+    height: 50%;
 }
 
 .icon-section > .header-sections-link {
@@ -53,17 +57,17 @@ header  .icon-wrapper > img {
 
 .header-sections-link > ul {
     display: flex;
-    justify-content: center;
     align-items: center;
     width: 100%;
     height: 100%;
 }
 .header-sections-link > ul > li {
+    list-style: none;
     margin-left: 0.625rem;
     color: #fff;
+    cursor: pointer;
 }
 
-/* right section header */
 header > .search-bar-wrapper {
     display: flex;
     justify-content: flex-end;
@@ -74,42 +78,71 @@ header > .search-bar-wrapper {
 
 header > .search-bar-wrapper > input {
     width: 50%;
-    height: 80%;
+    height: 50%;
+    padding: 0.9rem;
+    background-color: #000;
+    border: 1px solid #fff;
+    color: #fff;
 }
 
 header > .search-bar-wrapper > button {
-    width: 10%;
-    height: 80%;
+    width: 50px;
+    height: 50px;
+    font-size: 1.2rem;
+    background-color: rgba(0, 0, 0, 0);
+    border: none;
+    color: #fff;
 }
 
-/* main app */
+.icons-wrapper-right {
+    display: flex;
+    align-items: center;
+    width: 30%;
+    height: 100%;
+    color: #fff;
+}
+.icons-wrapper-right > i:not(:last-child) {
+    margin-left: 1.3rem;
+    font-size: 1.5rem;
+}
+
+.icons-wrapper-right > img {
+    margin-left: 1.5rem;
+    margin-right: 0.5rem;
+    border-radius: .325rem;
+}
+
 #app > main {
-    /* border: var(--debug); */
     width: 95%;
     margin: auto;
-    /* height: calc(100vh - 4.375rem); */
     background-color: #151515;
     margin-top: 4.375rem;
 }
 
 main > .container-movies {
+    position: relative;
     display: flex;
     flex-wrap: wrap;
     justify-content: center;
     width: 100%;
-    /* height: 100%; */
 }
 
 .container-movies .movie-card {
     position: relative;
-    border: var(--debug);
     width: calc(100% / 5 - 2rem);
     height: 20.625rem;
     margin-left: .5rem;
-    margin-bottom: 0.8rem;
+    /* margin-bottom: 1.5rem; */
+    margin-bottom: 2.5rem;
     transition: transform .3s;
     border-radius: .325rem;
 }
+
+.container-movies .movie-card:hover {
+    transform: scale(1.3);
+    box-shadow: 0 19px 38px rgba(0,0,0,0.30), 0 15px 12px rgba(0,0,0,0.22);
+    z-index: 1;
+} 
 
 .container-movies .movie-card:hover .overlay {
     opacity: 1;
@@ -129,27 +162,75 @@ main > .container-movies {
     height: 100%;
     opacity: 0;
     transition: .5s ease;
-    background-color: rgb(21, 21, 21);
+    background-color: rgba(21, 21, 21, 0.899);
     color: white;
     overflow-wrap: break-word;
+    overflow-y: scroll;
+    border-radius: .325rem;
 }
 
 #title,
 #original-title,
 #language,
-#rate,
+#score,
 #overview {
     padding: .5rem;
     font-size: 1rem;
     overflow-wrap: break-word;
 }
 
-#overview {
-    overflow: scroll;
+#score > span {
+    color: yellow;
 }
 
-/* delete this after add vue  */
-img {
+.background-cover > img {
     width: 100%;
     height: 100%;
+    object-fit: cover;
+    object-position: center;
+    border-radius: .325rem;
+}
+.bg-grey {
+    background-color: gray;
+}
+.no-result {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    color: #fff;
+    font-size: .8rem;
+    margin-top: 8.750rem;
+}
+.no-result > ul > li > ul {
+    list-style: circle;
+}
+.no-result > ul > li {
+    margin-left: 2.5rem;
+}
+
+@media (min-width: 768px) and (max-width: 992px) {
+    .container-movies .movie-card {
+        position: relative;
+        width: calc(100% / 4 - 2rem);
+        height: 20.625rem;
+        margin-left: .5rem;
+        /* margin-bottom: 1.5rem; */
+        margin-bottom: 2.5rem;
+        transition: transform .3s;
+        border-radius: .325rem;
+    }
+}
+
+@media (min-width: 576px) and (max-width: 767px) {
+    .container-movies .movie-card {
+        position: relative;
+        width: calc(100% / 2 - 2rem);
+        height: 20.625rem;
+        margin-left: .5rem;
+        /* margin-bottom: 1.5rem; */
+        margin-bottom: 2.5rem;
+        transition: transform .3s;
+        border-radius: .325rem;
+    }
 }
