@@ -45,7 +45,10 @@
             <div class="container-movies">
 
                 <!-- MOVIE CARD -->
-                <div v-for="movie in searchedList" class="movie-card">
+                <div 
+                v-for="(movie, index) in searchedList"
+                @mouseenter="getCast(movie)"
+                class="movie-card" >
                     <div class="background-cover">
                         <img v-if="movie.poster_path != null" :src="prefixUrl+movie.poster_path" alt="movie.title">
                         <img v-else src="img/no-cover.png" alt="movie.title">
@@ -62,7 +65,11 @@
                             <i v-for="vote in (Math.ceil(movie.vote_average / 2))"class="fas fa-star"></i>
                             <i v-for="vote in (5 - Math.ceil(movie.vote_average / 2)) "class="far fa-star"></i>
                         </span></h2>
-                        <h2 id="cast">Cast:<span class="content-card"></span></h2>
+                        <h2 id="cast">Cast:
+                            <span class="content-card">
+                                {{cast.join(',')}}
+                            </span>
+                        </h2>
                         <h2 id="genres">Gernes:<span class="content-card"></span></h2>
                         <h2 id="overview">Overview:<span class="content-card">{{movie.overview}}</span></h2>
                     </div>
