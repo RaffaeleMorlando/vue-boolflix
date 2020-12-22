@@ -30,7 +30,10 @@
                 </div>
             </div>
             <div class="search-bar-wrapper">
-                <input  @keyup="getSearched" v-model="searchValue" type="text" placeholder="Title, people, genres">
+                <input  
+                @keyup.enter="getSearched" 
+                v-model="searchValue" 
+                type="text" placeholder="Title, people, genres">
                 <button @click="getSearched"><i class="fas fa-search"></i></button>
                 <div class="icons-wrapper-right">
                     <i class="fas fa-gift"></i>
@@ -47,7 +50,6 @@
                 <!-- MOVIE CARD -->
                 <div 
                 v-for="(movie, index) in searchedList"
-                @mouseenter="getCast(movie)"
                 class="movie-card" >
                     <div class="background-cover">
                         <img v-if="movie.poster_path != null" :src="prefixUrl+movie.poster_path" alt="movie.title">
@@ -67,17 +69,19 @@
                         </span></h2>
                         <h2 id="cast">Cast:
                             <span class="content-card">
-                                {{cast.join(',')}}
+                                {{movie.cast.join(',')}}
                             </span>
                         </h2>
-                        <h2 id="genres">Gernes:<span class="content-card"></span></h2>
+                        <h2 id="genres">Gernes:<span class="content-card">
+                            {{movie.genres.join(',')}}
+                        </span></h2>
                         <h2 id="overview">Overview:<span class="content-card">{{movie.overview}}</span></h2>
                     </div>
                 </div>
                 <!-- /MOVIE CARD -->
 
                 <!-- SHOW MESSAGE IF SEARCH DON'T GET RESULTS -->
-                <div v-if="searchedList == 0" class="no-result">
+                <div v-if="searchedList.length == 0" class="no-result">
                     <p>You search for "{{searchValue}}" did not have any matches</p><br>
                     <p>Suggestion:</p>
                     <ul>
@@ -87,11 +91,11 @@
                         <li>Lorem ipsum dolor sit.</li>
                     </ul>
                 </div>
-                <!-- /SHOW MESSAGE IF SEARCH DON'T GET RESULTS -->
+                <!-- /SHOW MESSAGE IF SEARCH DON'T GET RESULTS-->
             </div>
         </main>
     </div>
 
-    <script src="js/app.js"></script>
+    <script src="js/main.js"></script>
 </body>
 </html>
