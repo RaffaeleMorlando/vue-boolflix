@@ -16,7 +16,7 @@ const app = new Vue(
     extensionImg: '.svg',
     genres: [],
     selected: '',
-    counter: 0
+    debounce: null
   },
   mounted(){
     this.getGenres();
@@ -59,7 +59,7 @@ const app = new Vue(
         }
       })
       .then((result) =>  {
-        this.searchedList = result.data.results
+        this.searchedList = result.data.results;
         this.searchedListCopy = this.searchedList;
         for(let i = 0; i < this.searchedList.length; i++ ) {
           this.getCast(this.searchedList[i]);
@@ -148,16 +148,12 @@ const app = new Vue(
         );
         this.searchedList = filteredCard;
       }
-      
-    }
-  },
-  watch: {
-    counter() {
-      if(this.counter == 20) {
-        console.log(this.counter);
-        this.counter = 0;
-        this.$forceUpdate();
-      }
+    },
+    debounceSearch: function(callback) {
+      clearTimeout(this.debounce)
+      this.debounce = setTimeout(() => {
+        callback();
+      }, 500)
     }
   },
   filters: {
@@ -167,3 +163,4 @@ const app = new Vue(
   }
 }
 );
+

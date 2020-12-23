@@ -63,11 +63,11 @@ header  .icon-wrapper > img {
 }
 .header-sections-link > ul > li {
     list-style: none;
-    /* margin-left: 0.625rem; */
     margin-left: 1.3rem;
     color: rgb(131, 128, 128);
     cursor: pointer;
 }
+
 
 header > .search-bar-wrapper {
     display: flex;

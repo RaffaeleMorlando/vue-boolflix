@@ -21,7 +21,7 @@
                 </div>
                 <div class="header-sections-link">
                     <ul>
-                        <li style="color: #fff;">Home</li>
+                        <li @click="getPopular" style="color: #fff;">Home</li>
                         <li>TV Shows</li>
                         <li>Movies</li>
                         <li>New & Popular</li>
@@ -38,6 +38,7 @@
                 </div>
                 <input  
                 @keyup.enter="getSearched" 
+                @keyup="debounceSearch(getSearched)"  
                 v-model="searchValue" 
                 type="text" placeholder="Title, people, genres">
                 <button @click="getSearched"><i class="fas fa-search"></i></button>
@@ -51,8 +52,7 @@
         </header>
 
         <main>
-            <div class="container-movies">
-
+            <div class="container-movies">  
                 <!-- MOVIE CARD -->
                 <div 
                 v-for="(movie, index) in searchedList"
