@@ -30,6 +30,12 @@
                 </div>
             </div>
             <div class="search-bar-wrapper">
+                <div class="costum-select">
+                    <select @change="filtredByGenre" v-model="selected">
+                        <option class="options" value=" ">Genres</option>
+                        <option v-for="genre in genres" class="options" :value="genre.id">{{genre.name}}</option>
+                    </select>
+                </div>
                 <input  
                 @keyup.enter="getSearched" 
                 v-model="searchValue" 
@@ -69,11 +75,11 @@
                         </span></h2>
                         <h2 id="cast">Cast:
                             <span class="content-card">
-                                {{movie.cast.join(',')}}
+                                {{movie.cast.join(' , ')}}
                             </span>
                         </h2>
                         <h2 id="genres">Gernes:<span class="content-card">
-                            {{movie.genres.join(',')}}
+                            {{movie.genres.join(' , ')}}
                         </span></h2>
                         <h2 id="overview">Overview:<span class="content-card">{{movie.overview}}</span></h2>
                     </div>

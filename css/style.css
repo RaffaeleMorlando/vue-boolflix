@@ -76,13 +76,28 @@ header > .search-bar-wrapper {
     width: 50%;
     height: 100%;
 }
-
+header > .search-bar-wrapper > .costum-select {
+    width: 20%;
+    padding: 0.9rem;
+    color: #fff;
+}
+header > .search-bar-wrapper > .costum-select > select {
+    width: 100%;
+    height: 100%;
+    background-color: #000;
+    border: 1px solid #fff;
+    color: #fff;
+    padding: .5rem;
+}
 header > .search-bar-wrapper > input {
     width: 50%;
     height: 50%;
     padding: 0.9rem;
     background-color: #000;
     border: 1px solid #fff;
+    color: #fff;
+}
+.options {
     color: #fff;
 }
 

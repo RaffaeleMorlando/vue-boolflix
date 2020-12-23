@@ -1,9 +1,12 @@
+// [] add debounce function to inputsearch
+
 const app = new Vue(
  {
    el: '#app',
    data: {
     searchValue: '',
     searchedList: [],
+    searchedListCopy: [],
     api_key: '235a6ac442ac4f61d5783c4fbcc2b7ae',
     movieUrl: 'https://api.themoviedb.org/3/search/movie',
     tvShowUrl: 'https://api.themoviedb.org/3/search/tv',
@@ -12,6 +15,7 @@ const app = new Vue(
     urlImg:'img/imgflags/',
     extensionImg: '.svg',
     genres: [],
+    selected: '',
     counter: 0
   },
   mounted(){
@@ -30,6 +34,7 @@ const app = new Vue(
       })
       .then((result) => {
         this.searchedList = result.data.results;
+        this.searchedListCopy = this.searchedList;
         for(let i = 0; i < this.searchedList.length; i++ ) {
           this.getCast(this.searchedList[i]);
           this.showGenre(this.searchedList[i]);
@@ -56,6 +61,7 @@ const app = new Vue(
       })
       .then((result) =>  {
         this.searchedList = result.data.results
+        this.searchedListCopy = this.searchedList;
         for(let i = 0; i < this.searchedList.length; i++ ) {
           this.getCast(this.searchedList[i]);
           this.showGenre(this.searchedList[i]);
@@ -74,8 +80,10 @@ const app = new Vue(
       })
       .then((result) =>  {
         this.searchedList.push(...result.data.results);
+        this.searchedListCopy = this.searchedList;
         for(let i = 0; i < this.searchedList.length; i++ ) {
           this.getCast(this.searchedList[i]);
+          this.showGenre(this.searchedList[i]);
         }
         this.$forceUpdate();
       })
@@ -127,7 +135,20 @@ const app = new Vue(
           )
         }
       )
-      this.counter++
+    },
+    filtredByGenre: function() {
+      if(this.selected == ' '){
+        this.searchedList = this.searchedListCopy;
+      } else {
+        this.searchedList = this.searchedListCopy;
+        const filteredCard = this.searchedListCopy.filter(
+          (movie) => {
+            return movie.genre_ids.includes(this.selected);
+          }
+        );
+        this.searchedList = filteredCard;
+      }
+      
     }
   },
   watch: {
