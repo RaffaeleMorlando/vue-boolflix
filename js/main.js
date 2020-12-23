@@ -19,7 +19,6 @@ const app = new Vue(
     counter: 0
   },
   mounted(){
-    this.getPopular();
     this.getGenres();
   },
   methods: {
@@ -120,6 +119,7 @@ const app = new Vue(
       })
       .then((result) => {
         this.genres = result.data.genres;
+        this.getPopular();
       });
     },
     showGenre: function(movie) {
@@ -166,4 +166,4 @@ const app = new Vue(
     }
   }
 }
-); 
+);
