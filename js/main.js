@@ -16,12 +16,45 @@ const app = new Vue(
     extensionImg: '.svg',
     genres: [],
     selected: '',
-    debounce: null
+    debounce: null,
+    isActive: false,
+    myList: JSON.parse(localStorage.getItem('movies')),
   },
   mounted(){
     this.getGenres();
   },
   methods: {
+    deleteToMyList: function(index){
+      let newData = JSON.parse(localStorage.getItem('movies'));
+      newData.slice(0,index);
+      this.myList = newData;
+    },
+    addToMyList: function(movie) {
+      if(this.myList == null) {
+        localStorage.setItem('movies', '[]')
+      } else {
+        let oldData = JSON.parse(localStorage.getItem('movies'));
+        oldData.push(movie);
+
+        localStorage.setItem('movies', JSON.stringify(oldData));
+        let newData = JSON.parse(localStorage.getItem('movies'));
+        this.myList = newData;
+        this.showMyList();
+      }
+    },
+    showMyList: function() {
+      if(this.myList === null) {
+        this.searchedList = [];
+      } else {
+        this.searchedList = this.myList;
+      }
+      
+      // for(let i = 0; i < this.searchedList.length; i++ ) {
+      //   this.getCast(this.searchedList[i]);
+      //   this.showGenre(this.searchedList[i]);
+      // };
+      this.$forceUpdate();
+    },
     getPopular: function() {
       axios.get(this.popularUrl, {
         params: {
@@ -50,6 +83,7 @@ const app = new Vue(
       }
     },
     getMovies: function() {
+      this.searchedList = [];
       axios
       .get(this.movieUrl, {
         params: {
@@ -80,6 +114,41 @@ const app = new Vue(
       .then((result) =>  {
         this.searchedList.push(...result.data.results);
         this.searchedListCopy = this.searchedList;
+        for(let i = 0; i < this.searchedList.length; i++ ) {
+          this.getCast(this.searchedList[i]);
+          this.showGenre(this.searchedList[i]);
+        }
+        this.$forceUpdate();
+      })
+    },
+    getMoviesPopular: function() {
+      this.getCast
+      axios.get('https://api.themoviedb.org/3/movie/popular', {
+        params: {
+          api_key: this.api_key,
+          language: 'en-EN'
+        }
+      })
+      .then((result) => {
+        this.searchedList = result.data.results;
+        for(let i = 0; i < this.searchedList.length; i++ ) {
+          this.getCast(this.searchedList[i]);
+          this.showGenre(this.searchedList[i]);
+        }
+        this.$forceUpdate();
+      })
+    },
+    getTvShowPopular: function() {
+      console.log('tv show popular');
+      this.getCast
+      axios.get('https://api.themoviedb.org/3/tv/popular', {
+        params: {
+          api_key: this.api_key,
+          language: 'en-EN'
+        }
+      })
+      .then((result) => {
+        this.searchedList = result.data.results;
         for(let i = 0; i < this.searchedList.length; i++ ) {
           this.getCast(this.searchedList[i]);
           this.showGenre(this.searchedList[i]);
@@ -137,7 +206,7 @@ const app = new Vue(
       )
     },
     filtredByGenre: function() {
-      if(this.selected == ' '){
+      if(this.selected == ''){
         this.searchedList = this.searchedListCopy;
       } else {
         this.searchedList = this.searchedListCopy;
@@ -164,3 +233,4 @@ const app = new Vue(
 }
 );
 
+//[] Al click sulla stella , il film si aggiunge alla lista dei preferiti

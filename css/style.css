@@ -79,7 +79,6 @@ header > .search-bar-wrapper {
 header > .search-bar-wrapper > .costum-select {
     width: 20%;
     padding: 0.9rem;
-    color: #fff;
 }
 header > .search-bar-wrapper > .costum-select > select {
     width: 100%;
@@ -169,6 +168,7 @@ main > .container-movies {
     height: 100%;
 }
 .overlay {
+    position: relative;
     display: flex;
     flex-direction: column;
     position: absolute;
@@ -183,6 +183,33 @@ main > .container-movies {
     overflow-wrap: break-word;
     overflow-y: scroll;
     border-radius: .325rem;
+}
+
+#favorites {
+    position: absolute;
+    right: 0;
+    top: 0;
+    font-size: 1.2rem;
+    padding-right: .5rem;
+    padding-top: .5rem;
+    margin-right: .5rem;
+    color: yellow;
+    cursor: pointer;
+}
+
+#remove {
+    position: absolute;
+    right: 15%;
+    top: 0;
+    font-size: 1.2rem;
+    padding-right: .5rem;
+    padding-top: .5rem;
+    margin-right: .5rem;
+    color: red;
+    cursor: pointer;
+}
+#title {
+    margin-top: 1.2rem;
 }
 
 #title,
@@ -205,6 +232,11 @@ main > .container-movies {
 }
 #score > span > i.far.fa-star {
     margin-left: 1px;
+}
+.overlay span {
+    color: lightgray;
+    font-size: .9rem;
+    font-weight: 100;
 }
 
 .content-card {
@@ -246,6 +278,10 @@ main > .container-movies {
 #language img {
     max-width: 20px;
     margin-left: .625rem;
+}
+
+#active {
+    color: #fff;
 }
 
 @media (min-width: 768px) and (max-width: 992px) {

@@ -21,18 +21,18 @@
                 </div>
                 <div class="header-sections-link">
                     <ul>
-                        <li @click="getPopular" style="color: #fff;">Home</li>
-                        <li>TV Shows</li>
-                        <li>Movies</li>
+                        <li @click="getPopular">Home</li>
+                        <li @click="getTvShowPopular">TV Shows</li>
+                        <li @click="getMoviesPopular">Movies</li>
                         <li>New & Popular</li>
-                        <li>My List</li>
+                        <li @click="showMyList">My List</li>
                     </ul>
                 </div>
             </div>
             <div class="search-bar-wrapper">
                 <div class="costum-select">
                     <select @change="filtredByGenre" v-model="selected">
-                        <option class="options" value=" ">Genres</option>
+                        <option class="options" value="">Genres</option>
                         <option v-for="genre in genres" class="options" :value="genre.id">{{genre.name}}</option>
                     </select>
                 </div>
@@ -62,6 +62,8 @@
                         <img v-else src="img/no-cover.png" alt="movie.title">
                     </div>
                     <div class="overlay">
+                        <span @click="deleteToMyList(index)" id="remove"><i class="fas fa-minus"></i></span>
+                        <span @click="addToMyList(movie)" id="favorites"><i class="far fa-star"></i></span>
                         <h2 id="title">Title:<span class="content-card">{{movie.title}}{{movie.name}}</span></h2>
                         <h2 id="original-title">Original Title:<span class="content-card">{{movie.original_title}}{{movie.name}}</span></h2>
                         <h2 id="language">Language:
