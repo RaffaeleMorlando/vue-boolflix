@@ -185,7 +185,7 @@ main > .container-movies {
     border-radius: .325rem;
 }
 
-#favorites {
+.favorites {
     position: absolute;
     right: 0;
     top: 0;
@@ -197,15 +197,14 @@ main > .container-movies {
     cursor: pointer;
 }
 
-#remove {
+.removeList {
     position: absolute;
-    right: 15%;
+    right: 0;
     top: 0;
     font-size: 1.2rem;
     padding-right: .5rem;
     padding-top: .5rem;
     margin-right: .5rem;
-    color: red;
     cursor: pointer;
 }
 #title {
