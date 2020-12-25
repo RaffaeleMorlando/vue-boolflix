@@ -8,6 +8,7 @@ const app = new Vue(
     searchedList: [],
     searchedListCopy: [],
     api_key: '235a6ac442ac4f61d5783c4fbcc2b7ae',
+    language: 'en-US',
     movieUrl: 'https://api.themoviedb.org/3/search/movie',
     tvShowUrl: 'https://api.themoviedb.org/3/search/tv',
     popularUrl: 'https://api.themoviedb.org/3/trending/all/day',
@@ -17,31 +18,38 @@ const app = new Vue(
     genres: [],
     selected: '',
     debounce: null,
-    isActive: false,
     myList: JSON.parse(localStorage.getItem('movies')),
   },
   mounted(){
     this.getGenres();
   },
   methods: {
+    deleteToMyList: function(index) {
+      let newArray = this.myList;
+      newArray.splice(index,1);
+      localStorage.setItem('movies',JSON.stringify(newArray));
+      let newData = JSON.parse(localStorage.getItem('movies'));
+      this.myList = newData;
+      this.showMyList();
+    },
     addToMyList: function (movie) {
       if(localStorage.getItem('movies') == null) {
-        localStorage.setItem('movies', '[]')
-      }
+        localStorage.setItem('movies', '[]');
+      };
 
       let oldData = JSON.parse(localStorage.getItem('movies'));
-      oldData.push(movie)
+      oldData.push(movie);
 
       // check if movies or tvshow already exist in my list
       const moviesHashMap = {};
       let newData = oldData.filter(item => {
 
-        let alreadyExist = moviesHashMap.hasOwnProperty(item.id)
+        let alreadyExist = moviesHashMap.hasOwnProperty(item.id);
        
-        return alreadyExist ? false : moviesHashMap[item.id] = true
+        return alreadyExist ? false : moviesHashMap[item.id] = true;
       });
 
-      console.log(newData);
+      console.log(moviesHashMap);
 
       localStorage.setItem('movies', JSON.stringify(newData));
       newData = JSON.parse(localStorage.getItem('movies'));
@@ -61,11 +69,21 @@ const app = new Vue(
       };
       this.$forceUpdate();
     },
+    getLatest: function() {
+      let Url1 = 'https://api.themoviedb.org/3/tv/latest';
+      let Url2 = 'https://api.themoviedb.org/3/movie/latest';
+      const promise1 = axios.get(Url1,{api_key: this.api_key,language: this.language});
+      const promise2 = axios.get(Url2,{api_key: this.api_key,language: this.language});
+
+      Promise.all([promise1, promise2]).then((result) => {
+        console.log(result.data);
+      });
+    },
     getPopular: function() {
       axios.get(this.popularUrl, {
         params: {
           api_key: this.api_key,
-          language: 'en-US',
+          language: this.language,
           media_type: 'all',
           time_window: 'day'
         }
@@ -95,7 +113,7 @@ const app = new Vue(
         params: {
           api_key: this.api_key,
           query: this.searchValue,
-          language: 'en-EN',
+          language: this.language,
         }
       })
       .then((result) =>  {
@@ -114,7 +132,7 @@ const app = new Vue(
         params: {
           api_key: this.api_key,
           query: this.searchValue,
-          language: 'en-EN',
+          language: this.language,
         }
       })
       .then((result) =>  {
@@ -132,7 +150,7 @@ const app = new Vue(
       axios.get('https://api.themoviedb.org/3/movie/popular', {
         params: {
           api_key: this.api_key,
-          language: 'en-EN'
+          language: this.language
         }
       })
       .then((result) => {
@@ -150,7 +168,7 @@ const app = new Vue(
       axios.get('https://api.themoviedb.org/3/tv/popular', {
         params: {
           api_key: this.api_key,
-          language: 'en-EN'
+          language: this.language
         }
       })
       .then((result) => {
@@ -173,7 +191,7 @@ const app = new Vue(
       axios.get(endpoint, {
         params: {
           api_key: this.api_key,
-          language: 'en-EN',
+          language: this.language
         }
       })
       .then((result) => {  
@@ -240,45 +258,3 @@ const app = new Vue(
 );
 
 //[] Al click sulla stella , il film si aggiunge alla lista dei preferiti
-
-
-
-
-// deleteToMyList: function(index){
-//       let newData = JSON.parse(localStorage.getItem('movies'));
-//       newData.slice(0,index);
-//       this.myList = newData;
-//     },
-//     addToMyList: function(movie) {
-//       console.log('dasddad');
-//       if(this.myList == null) {
-//         localStorage.setItem('movies', '[]')
-//       } else {
-//         let oldData = JSON.parse(localStorage.getItem('movies'));
-//         let oldDataCopy = oldData;
-//         console.log(oldDataCopy);
-//         for (let i = 0; i < oldDataCopy.length; i++) {
-//           if (oldDataCopy[i].id.includes(movie.id)) {
-//             oldData.push(movie)
-//           }
-//         }
-
-//         localStorage.setItem('movies', JSON.stringify(oldData));
-//         let newData = JSON.parse(localStorage.getItem('movies'));
-//         this.myList = newData;
-//         this.showMyList();
-//       }
-//     },
-//     showMyList: function() {
-//       if(this.myList === null) {
-//         this.searchedList = [];
-//       } else {
-//         this.searchedList = this.myList;
-//       }
-      
-//       // for(let i = 0; i < this.searchedList.length; i++ ) {
-//       //   this.getCast(this.searchedList[i]);
-//       //   this.showGenre(this.searchedList[i]);
-//       // };
-//       this.$forceUpdate();
-//     },

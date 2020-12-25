@@ -24,7 +24,7 @@
                         <li @click="getPopular">Home</li>
                         <li @click="getTvShowPopular">TV Shows</li>
                         <li @click="getMoviesPopular">Movies</li>
-                        <li>New & Popular</li>
+                        <li @click="getLatest">New & Popular</li>
                         <li @click="showMyList">My List</li>
                     </ul>
                 </div>
@@ -62,7 +62,7 @@
                         <img v-else src="img/no-cover.png" alt="movie.title">
                     </div>
                     <div class="overlay">
-                        <!-- <span id="remove"><i class="fas fa-minus"></i></span> -->
+                        <span @click="deleteToMyList(index)" id="remove"><i class="fas fa-minus"></i></span>
                         <span @click="addToMyList(movie)" id="favorites"><i class="far fa-star"></i></span>
                         <h2 id="title">Title:<span class="content-card">{{movie.title}}{{movie.name}}</span></h2>
                         <h2 id="original-title">Original Title:<span class="content-card">{{movie.original_title}}{{movie.name}}</span></h2>
