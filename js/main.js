@@ -24,23 +24,29 @@ const app = new Vue(
     this.getGenres();
   },
   methods: {
-    deleteToMyList: function(index){
-      let newData = JSON.parse(localStorage.getItem('movies'));
-      newData.slice(0,index);
-      this.myList = newData;
-    },
-    addToMyList: function(movie) {
-      if(this.myList == null) {
+    addToMyList: function (movie) {
+      if(localStorage.getItem('movies') == null) {
         localStorage.setItem('movies', '[]')
-      } else {
-        let oldData = JSON.parse(localStorage.getItem('movies'));
-        oldData.push(movie);
-
-        localStorage.setItem('movies', JSON.stringify(oldData));
-        let newData = JSON.parse(localStorage.getItem('movies'));
-        this.myList = newData;
-        this.showMyList();
       }
+
+      let oldData = JSON.parse(localStorage.getItem('movies'));
+      oldData.push(movie)
+
+      // check if movies or tvshow already exist in my list
+      const moviesHashMap = {};
+      let newData = oldData.filter(item => {
+
+        let alreadyExist = moviesHashMap.hasOwnProperty(item.id)
+       
+        return alreadyExist ? false : moviesHashMap[item.id] = true
+      });
+
+      console.log(newData);
+
+      localStorage.setItem('movies', JSON.stringify(newData));
+      newData = JSON.parse(localStorage.getItem('movies'));
+      this.myList = newData;
+      this.showMyList();
     },
     showMyList: function() {
       if(this.myList === null) {
@@ -49,10 +55,10 @@ const app = new Vue(
         this.searchedList = this.myList;
       }
       
-      // for(let i = 0; i < this.searchedList.length; i++ ) {
-      //   this.getCast(this.searchedList[i]);
-      //   this.showGenre(this.searchedList[i]);
-      // };
+      for(let i = 0; i < this.searchedList.length; i++ ) {
+        this.getCast(this.searchedList[i]);
+        this.showGenre(this.searchedList[i]);
+      };
       this.$forceUpdate();
     },
     getPopular: function() {
@@ -234,3 +240,45 @@ const app = new Vue(
 );
 
 //[] Al click sulla stella , il film si aggiunge alla lista dei preferiti
+
+
+
+
+// deleteToMyList: function(index){
+//       let newData = JSON.parse(localStorage.getItem('movies'));
+//       newData.slice(0,index);
+//       this.myList = newData;
+//     },
+//     addToMyList: function(movie) {
+//       console.log('dasddad');
+//       if(this.myList == null) {
+//         localStorage.setItem('movies', '[]')
+//       } else {
+//         let oldData = JSON.parse(localStorage.getItem('movies'));
+//         let oldDataCopy = oldData;
+//         console.log(oldDataCopy);
+//         for (let i = 0; i < oldDataCopy.length; i++) {
+//           if (oldDataCopy[i].id.includes(movie.id)) {
+//             oldData.push(movie)
+//           }
+//         }
+
+//         localStorage.setItem('movies', JSON.stringify(oldData));
+//         let newData = JSON.parse(localStorage.getItem('movies'));
+//         this.myList = newData;
+//         this.showMyList();
+//       }
+//     },
+//     showMyList: function() {
+//       if(this.myList === null) {
+//         this.searchedList = [];
+//       } else {
+//         this.searchedList = this.myList;
+//       }
+      
+//       // for(let i = 0; i < this.searchedList.length; i++ ) {
+//       //   this.getCast(this.searchedList[i]);
+//       //   this.showGenre(this.searchedList[i]);
+//       // };
+//       this.$forceUpdate();
+//     },
