@@ -19,7 +19,8 @@ const app = new Vue(
     selected: '',
     debounce: null,
     myList: JSON.parse(localStorage.getItem('movies')),
-    section: false
+    section: false,
+    sections: {},
   },
   mounted(){
     this.getGenres();
@@ -59,6 +60,8 @@ const app = new Vue(
     },
     showMyList: function() {
       this.section = true;
+      this.sections = {};
+      this.sections.myList = true;
       if(this.myList === null) {
         this.searchedList = [];
       } else {
@@ -83,6 +86,8 @@ const app = new Vue(
     },
     getPopular: function() {
       this.section = false;
+      this.sections = {};
+      this.sections.home = true;
       axios.get(this.popularUrl, {
         params: {
           api_key: this.api_key,
@@ -153,6 +158,8 @@ const app = new Vue(
     },
     getMoviesPopular: function() {
       this.section = false;
+      this.sections = {}
+      this.sections.movie = true;
       this.getCast
       axios.get('https://api.themoviedb.org/3/movie/popular', {
         params: {
@@ -171,6 +178,8 @@ const app = new Vue(
     },
     getTvShowPopular: function() {
       this.section = false;
+      this.sections = {};
+      this.sections.tvShow = true;
       console.log('tv show popular');
       this.getCast
       axios.get('https://api.themoviedb.org/3/tv/popular', {

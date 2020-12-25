@@ -21,11 +21,11 @@
                 </div>
                 <div class="header-sections-link">
                     <ul>
-                        <li @click="getPopular">Home</li>
-                        <li @click="getTvShowPopular">TV Shows</li>
-                        <li @click="getMoviesPopular">Movies</li>
+                        <li :class="{active: sections.home}" @click="getPopular">Home</li>
+                        <li :class="{active: sections.tvShow}" @click="getTvShowPopular">TV Shows</li>
+                        <li :class="{active: sections.movie}" @click="getMoviesPopular">Movies</li>
                         <li @click="getLatest">New & Popular</li>
-                        <li @click="showMyList">My List</li>
+                        <li :class="{active: sections.myList}" @click="showMyList">My List</li>
                     </ul>
                 </div>
             </div>

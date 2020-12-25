@@ -60,11 +60,12 @@ header  .icon-wrapper > img {
     align-items: center;
     width: 100%;
     height: 100%;
+    color: rgb(131, 128, 128);
 }
 .header-sections-link > ul > li {
     list-style: none;
     margin-left: 1.3rem;
-    color: rgb(131, 128, 128);
+    /* color: rgb(131, 128, 128); */
     cursor: pointer;
 }
 
@@ -207,6 +208,11 @@ main > .container-movies {
     margin-right: .5rem;
     cursor: pointer;
 }
+
+.active {
+    color: #fff;
+}
+
 #title {
     margin-top: 1.2rem;
 }
