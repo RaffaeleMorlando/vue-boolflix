@@ -63,11 +63,19 @@ const app = new Vue(
 
               this.searchedList = this.searchedList.concat(newArray);
 
+              const moviesHashMap = {};
+              this.searchedList = this.searchedList.filter(item => {
+
+                let alreadyExist = moviesHashMap.hasOwnProperty(item.id);
+              
+                return alreadyExist ? false : moviesHashMap[item.id] = true;
+              });
+
               if(this.sections.myList === true) {
                 this.searchedList = JSON.parse(localStorage.getItem('movies'));
                 this.showLoader = false;
               }
-              console.log(this.searchedList);
+
               for(let i = 0; i < this.searchedList.length; i++ ) {
                 this.getCast(this.searchedList[i]);
                 this.showGenre(this.searchedList[i]);
