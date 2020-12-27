@@ -1,4 +1,6 @@
-// [] add debounce function to inputsearch
+//[]indicare la sezione attuale, per caricare pagine della stessasezione quando scrollbar arriva alla fine
+//[] reset page count to 1
+
 
 const app = new Vue(
  {
@@ -21,11 +23,80 @@ const app = new Vue(
     myList: JSON.parse(localStorage.getItem('movies')),
     section: false,
     sections: {},
+    page: 1,
+    showLoader: false
   },
   mounted(){
     this.getGenres();
+    this.scrollTrigger();
   },
   methods: {
+    scrollTrigger: function() {
+      const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+          console.log(entry);
+          if(entry.intersectionRatio > 0) {
+            this.showLoader = true;
+            console.log(this.sections)
+            let url = '';
+            if(this.sections.tvShow === true){
+              url = 'https://api.themoviedb.org/3/tv/popular';
+            } else if (this.sections.movie === true){
+              url = 'https://api.themoviedb.org/3/movie/popular';
+            } else if(this.sections.home === true) {
+              url = this.popularUrl;
+            } else if(this.sections.topRated === true) {
+              url = 'https://api.themoviedb.org/3/movie/top_rated'
+            } else {
+              url = 'https://api.themoviedb.org/3/tv/popular';
+            }
+            axios.get(url, {
+              params: {
+                api_key: this.api_key,
+                language: this.language,
+                page: this.page++
+              }
+            })
+            .then((result) => {
+              let newArray = result.data.results
+              this.searchedListCopy = this.searchedList;
+
+              this.searchedList = this.searchedList.concat(newArray);
+
+              if(this.sections.myList === true) {
+                this.searchedList = JSON.parse(localStorage.getItem('movies'));
+                this.showLoader = false;
+              }
+              console.log(this.searchedList);
+              for(let i = 0; i < this.searchedList.length; i++ ) {
+                this.getCast(this.searchedList[i]);
+                this.showGenre(this.searchedList[i]);
+              }
+            })
+          }
+        })
+      });
+      observer.observe(this.$refs.infiniteScrollTrigger);
+    },
+    getTopRated: function() {
+      this.page = 1;
+      this.sections = {};
+      this.sections.topRated = true;
+      axios.get('https://api.themoviedb.org/3/movie/top_rated',{
+        params: {
+          api_key: this.api_key,
+          language: this.language
+        }
+      })
+      .then((result) => {
+        this.searchedList = result.data.results;
+        this.searchedListCopy = this.searchedList;
+        for(let i = 0; i < this.searchedList.length; i++ ) {
+          this.getCast(this.searchedList[i]);
+          this.showGenre(this.searchedList[i]);
+        }
+      });
+    },
     deleteToMyList: function(index) {
       let newArray = this.myList;
       newArray.splice(index,1);
@@ -59,6 +130,7 @@ const app = new Vue(
       this.showMyList();
     },
     showMyList: function() {
+      this.page = 1;
       this.section = true;
       this.sections = {};
       this.sections.myList = true;
@@ -74,17 +146,8 @@ const app = new Vue(
       };
       this.$forceUpdate();
     },
-    getLatest: function() {
-      let Url1 = 'https://api.themoviedb.org/3/tv/latest';
-      let Url2 = 'https://api.themoviedb.org/3/movie/latest';
-      const promise1 = axios.get(Url1,{api_key: this.api_key,language: this.language});
-      const promise2 = axios.get(Url2,{api_key: this.api_key,language: this.language});
-
-      Promise.all([promise1, promise2]).then((result) => {
-        console.log(result.data);
-      });
-    },
     getPopular: function() {
+      this.page = 1;
       this.section = false;
       this.sections = {};
       this.sections.home = true;
@@ -97,7 +160,7 @@ const app = new Vue(
         }
       })
       .then((result) => {
-        this.searchedList = result.data.results;
+        this.searchedList =result.data.results;
         this.searchedListCopy = this.searchedList;
         for(let i = 0; i < this.searchedList.length; i++ ) {
           this.getCast(this.searchedList[i]);
@@ -116,6 +179,7 @@ const app = new Vue(
       }
     },
     getMovies: function() {
+      this.page = 1;
       this.section = false;
       this.searchedList = [];
       axios
@@ -137,6 +201,7 @@ const app = new Vue(
       })
     },
     getTvShow: function() {
+      this.page = 1;
       this.section = false;
       axios
       .get(this.tvShowUrl, {
@@ -157,6 +222,7 @@ const app = new Vue(
       })
     },
     getMoviesPopular: function() {
+      this.page = 1;
       this.section = false;
       this.sections = {}
       this.sections.movie = true;
@@ -177,6 +243,7 @@ const app = new Vue(
       })
     },
     getTvShowPopular: function() {
+      this.page = 1;
       this.section = false;
       this.sections = {};
       this.sections.tvShow = true;
@@ -274,4 +341,3 @@ const app = new Vue(
 }
 );
 
-//[] Al click sulla stella , il film si aggiunge alla lista dei preferiti

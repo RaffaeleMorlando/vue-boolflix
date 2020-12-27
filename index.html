@@ -20,11 +20,18 @@
                 	<img src="img/netflix_logo.svg" alt="Netflix Logo">
                 </div>
                 <div class="header-sections-link">
+                    <select>
+                        <option @click="getPopular" value="home">Home</option>
+                        <option @click="getTvShowPopular" value="tvshow">TV Shows</option>
+                        <option @click="getMoviesPopular" value="movies">Movies</option>
+                        <option value="new">New & Popular</option>
+                        <option @click="showMyList" value="mylist">My List</option>
+                    </select>
                     <ul>
                         <li :class="{active: sections.home}" @click="getPopular">Home</li>
                         <li :class="{active: sections.tvShow}" @click="getTvShowPopular">TV Shows</li>
                         <li :class="{active: sections.movie}" @click="getMoviesPopular">Movies</li>
-                        <li @click="getLatest">New & Popular</li>
+                        <li :class="{active: sections.topRated}" @click="getTopRated">New & Popular</li>
                         <li :class="{active: sections.myList}" @click="showMyList">My List</li>
                     </ul>
                 </div>
@@ -89,7 +96,7 @@
                 <!-- /MOVIE CARD -->
 
                 <!-- SHOW MESSAGE IF SEARCH DON'T GET RESULTS -->
-                <div v-if="searchedList.length == 0" class="no-result">
+                <div v-if="searchValue.length > 3 && searchedList == 0" class="no-result">
                     <p>You search for "{{searchValue}}" did not have any matches</p><br>
                     <p>Suggestion:</p>
                     <ul>
@@ -102,6 +109,11 @@
                 <!-- /SHOW MESSAGE IF SEARCH DON'T GET RESULTS-->
             </div>
         </main>
+
+        <footer>
+            <div ref="infiniteScrollTrigger" id="scroll-trigger"></div>
+            <div v-if="showLoader" class="circle-loader"></div>
+        </footer>
     </div>
 
     <script src="js/main.js"></script>
